@@ -2,16 +2,21 @@ package com.example.project;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
     //Variable for readability purposes
     protected static final String ACTIVITY_NAME = "MainActivity";
 
-    //    private Button one ;
-//    private Button two ;
-//    private Button three ;
+    private Button one ;
+    private Button two ;
+    private Button three ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,11 +24,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Log.i(ACTIVITY_NAME, "In onCreate()");
 
-        // one = findViewByID(R.id.);
-        // two = findViewByID(R.id.);
-        // three = findViewByID(R.id.);
-
-        //one.setOnClickListener(new View.OnClickListener() {
+         one = findViewById(R.id.button1);
+         two = findViewById(R.id.button2);
+         three = findViewById(R.id.button3);
+//Uncomment once Other pages are made
+//        one.setOnClickListener(new View.OnClickListener() {
 //        @Override
 //        public void onClick(View view) {
 //              //In _ InsertActivityWeAreGoingTo
@@ -33,7 +38,29 @@ public class MainActivity extends AppCompatActivity {
 ////                startActivity(intent);
 //        }
 //    });
-        //repeat for diff buttons and pgs
+//
+//        two.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                //In _ InsertActivityWeAreGoingTo
+//                Intent intent = new Intent(MainActivity.this, _.class);
+//
+//                startActivityForResult(intent,10);
+////                startActivity(intent);
+//            }
+//        });
+//
+//        three.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                //In _ InsertActivityWeAreGoingTo
+//                Intent intent = new Intent(MainActivity.this, _.class);
+//
+//                startActivityForResult(intent,10);
+////                startActivity(intent);
+//            }
+//        });
+
     }
 
 
