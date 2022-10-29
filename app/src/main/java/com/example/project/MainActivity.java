@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     private Button one ;
     private Button two ;
     private Button three ;
+    private Button motivationButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +28,18 @@ public class MainActivity extends AppCompatActivity {
          one = findViewById(R.id.button1);
          two = findViewById(R.id.button2);
          three = findViewById(R.id.button3);
+         motivationButton = findViewById(R.id.motiButton);
+        
+         motivationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i(ACTIVITY_NAME, "Motivation Time");
+                Intent intent = new Intent(MainActivity.this, Motivation.class);
+                startActivity(intent);
+            }
+        });
+        
+        
 //Uncomment once Other pages are made
 //        one.setOnClickListener(new View.OnClickListener() {
 //        @Override
