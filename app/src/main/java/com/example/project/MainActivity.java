@@ -39,14 +39,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-         goalsButt.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View view) {
-                 Intent goalsPage = new Intent(MainActivity.this, GoalActivity.class);
-                 startActivity(goalsPage);
-
-             }
-         });
         
         
 //Uncomment once Other pages are made

@@ -7,7 +7,7 @@
     tools:context=".GoalActivity">
 
     <RelativeLayout
-        android:id="@+id/relativeLayout2"
+        android:id="@+id/goals"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <EditText
-            android:id="@+id/editTextTextPersonName5"
+            android:id="@+id/inputBox"
             android:layout_width="267dp"
             android:layout_height="59dp"
             android:layout_alignParentEnd="true"
@@ -28,7 +28,7 @@
             android:text="@string/goalTextBox" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/goalsenter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -38,6 +38,7 @@
             android:text="@string/setGoal" />
 
         <ListView
+            android:id="@+id/goalsList"
             android:layout_width="match_parent"
             android:layout_height="668dp" />
     </RelativeLayout>
