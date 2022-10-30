@@ -16,4 +16,10 @@
     <string name="monthly_budget_subtract_budget_button">Minus from Budget</string>
     <string name="monthly_budget_subtract_expense_button">Minus Expense</string>
     <string name="monthly_budget_title_text">Monthly Budget</string>
+    <string name="title_activity_goal">GoalActivity</string>
+
+    <!-- Goals Page Strings -->
+    <string name="goals_button_string">Goals</string>
+    <string name="setGoal">Set Goal</string>
+    <string name="goalTextBox">Enter Goal</string>
 </resources>

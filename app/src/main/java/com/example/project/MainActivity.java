@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button one ;
     private Button two ;
-    private Button three ;
+    private Button goalsButt ;
     private Button motivationButton;
 
     @Override
@@ -27,17 +27,26 @@ public class MainActivity extends AppCompatActivity {
 
          one = findViewById(R.id.button1);
          two = findViewById(R.id.button2);
-         three = findViewById(R.id.button3);
+         goalsButt = findViewById(R.id.goalsButton);
          motivationButton = findViewById(R.id.motiButton);
         
          motivationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.i(ACTIVITY_NAME, "Motivation Time");
-                Intent intent = new Intent(MainActivity.this, Motivation.class);
+                Intent intent = new Intent(MainActivity.this, com.example.androidproject.Motivation.class);
                 startActivity(intent);
             }
         });
+
+         goalsButt.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 Intent goalsPage = new Intent(MainActivity.this, GoalActivity.class);
+                 startActivity(goalsPage);
+
+             }
+         });
         
         
 //Uncomment once Other pages are made
