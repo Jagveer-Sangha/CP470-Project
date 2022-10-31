@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Project</string>
     <string name="title_activity_monthly_budget">MonthlyBudget</string>
@@ -26,7 +27,6 @@
     <!--   Motivation Page Strings -->
     <string name="motivation_button_string">Motivation</string>
     <string name="motivate_button">Get Motivated</string>
-
 
     <!-- Extra Stuff   -->
     <string name="Temp">Current Progress</string>
