@@ -1,8 +1,6 @@
 package com.example.project;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,10 +12,11 @@ public class MainActivity extends AppCompatActivity {
     //Variable for readability purposes
     protected static final String ACTIVITY_NAME = "MainActivity";
 
-    private Button one ;
-    private Button two ;
+//    private Button one ;
+    private Button monthlyBudgetButton ;
     private Button goalsButt ;
     private Button motivationButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +24,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Log.i(ACTIVITY_NAME, "In onCreate()");
 
-         one = findViewById(R.id.button1);
-         two = findViewById(R.id.button2);
+//         one = findViewById(R.id.button1);
+         monthlyBudgetButton = findViewById(R.id.monthlyBud);
          goalsButt = findViewById(R.id.goalsButton);
          motivationButton = findViewById(R.id.motiButton);
         
@@ -34,36 +33,40 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.i(ACTIVITY_NAME, "Motivation Time");
-                Intent intent = new Intent(MainActivity.this, com.example.androidproject.Motivation.class);
-                startActivity(intent);
+                Intent intent = new Intent(MainActivity.this, Motivation.class);
+                startActivityForResult(intent,10);
+
+//                startActivity(intent);
+            }
+        });
+        
+//Uncomment once Other pages are made
+        goalsButt.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Log.i(ACTIVITY_NAME, "Goals Time");
+
+            //In _ InsertActivityWeAreGoingTo
+            Intent intent = new Intent(MainActivity.this, GoalActivity.class);
+
+            startActivityForResult(intent,10);
+//                startActivity(intent);
+        }
+    });
+
+        monthlyBudgetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i(ACTIVITY_NAME, "In Monthly Budget");
+
+                //In _ InsertActivityWeAreGoingTo
+                Intent intent = new Intent(MainActivity.this, MonthlyBudget.class);
+
+                startActivityForResult(intent,10);
+//                startActivity(intent);
             }
         });
 
-        
-        
-//Uncomment once Other pages are made
-//        one.setOnClickListener(new View.OnClickListener() {
-//        @Override
-//        public void onClick(View view) {
-//              //In _ InsertActivityWeAreGoingTo
-//            Intent intent = new Intent(MainActivity.this, _.class);
-//
-//            startActivityForResult(intent,10);
-////                startActivity(intent);
-//        }
-//    });
-//
-//        two.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                //In _ InsertActivityWeAreGoingTo
-//                Intent intent = new Intent(MainActivity.this, _.class);
-//
-//                startActivityForResult(intent,10);
-////                startActivity(intent);
-//            }
-//        });
-//
 //        three.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
