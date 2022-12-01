@@ -6,6 +6,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -18,11 +21,22 @@ public class SpendingCategory extends AppCompatActivity {
 
     DecimalFormat df = new DecimalFormat("##.##%");
     //SharedPreferences sp;
+    Toast toast;
+    Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spending_category);
+        String text = "Showing percentages...";
+        button = findViewById(R.id.toastButton);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toast = Toast.makeText(getApplicationContext(),text, Toast.LENGTH_SHORT );
+                toast.show();
+            }
+        });
     }
 
     //gets total per category in sp, adds percentage to list
