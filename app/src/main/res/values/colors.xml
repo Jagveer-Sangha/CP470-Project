@@ -8,5 +8,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="green">#04c237</color>
+    <color name="green_200">#04d437</color>
     <color name="red">#c20411</color>
+    <color name="magenta">#d302de</color>
+    <color name="yellow">#e2f01d</color>
+    <color name="DiscordGrey">#7289da</color>
 </resources>
