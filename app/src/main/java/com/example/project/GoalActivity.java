@@ -34,6 +34,7 @@ public class GoalActivity extends AppCompatActivity {
         Button goalEnter = findViewById(R.id.goalsenter);
         ListView goalsList = findViewById(R.id.goalsList);
 
+
         GoalAdapter goalAdapter = new GoalAdapter(this);
         goalsList.setAdapter(goalAdapter);
 
