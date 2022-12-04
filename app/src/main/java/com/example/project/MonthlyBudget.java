@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.animation.Easing;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 
 public class MonthlyBudget extends AppCompatActivity {
 
-    //Initalize variables
+    //Initialize variables
     ArrayList <String> BudgetList = new ArrayList<>();
     private static final String ACTIVITY_NAME = "MonthlyBudget";
 
@@ -36,19 +37,34 @@ public class MonthlyBudget extends AppCompatActivity {
 
 
     private PieChart pieChart;
-    private float sampleData1, sampleData2, sampleData3, sampleData4, sampleData5, sampleData6, sampleData7;
-    private static String FOOD = "Food & Dining", EDUCATE = "Education", ENTERTAIN = "Entertainment", HOUSE = "Housing", MEDS = "Medical", UTIL = "Utilities", AVAILABLE = "Remaining"; //Various Expense (subject to change)
+    private float sampleData1, sampleData2, sampleData3, sampleData4, sampleData5, sampleData6, sampleData7, sampleData8;
+    public static String FOOD = "Food", EDUCATE = "Education", ENTERTAIN = "Entertainment", HOUSE = "Housing", MEDS = "Medical", UTIL = "Utilities", ETC = "Other", AVAILABLE = "Remaining"; //Various Expense (subject to change)
+    public static String[] CATEGORIES = {FOOD, EDUCATE, ENTERTAIN, HOUSE, MEDS, UTIL, ETC, AVAILABLE};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_monthly_budget);
 
-        //Database
-
+        //Make Database
         BudgetDBH= new MonthlyBudgetDatabaseHelper(this);
         BudgetDB = BudgetDBH.getWritableDatabase();
-       /* String goalVal = ;
+
+        //Get Database items from current month's database
+        Cursor c = BudgetDB.rawQuery("select * from "+ MonthlyBudgetDatabaseHelper.TABLE_OF_BUDGET_ITEMS + ";", null);
+        c.moveToFirst();
+
+        //
+        /*while(!c.isAfterLast()){
+            String str = c.getString((c.getColumnIndexOrThrow(MonthlyBudgetDatabaseHelper.KEY_CATEGORY)));
+            //BudgetList.add(str);
+            Log.i(ACTIVITY_NAME, "SQL MESSAGE: " + c.getString(c.getColumnIndexOrThrow(MonthlyBudgetDatabaseHelper.KEY_CATEGORY)));
+            Log.i(ACTIVITY_NAME, "Cursor Column Count =" + c.getColumnCount());
+            c.moveToNext();
+        }
+
+
+         String goalVal = ;
         BudgetList.add(goalVal);
 
         ContentValues val = new ContentValues();
@@ -64,7 +80,15 @@ public class MonthlyBudget extends AppCompatActivity {
         loadPieChartData();
 
     }
-
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        MonthlyBudgetDatabaseHelper databaseHelper = new MonthlyBudgetDatabaseHelper(MonthlyBudget.this);
+        SQLiteDatabase database = databaseHelper.getWritableDatabase();
+        databaseHelper.onUpgrade(database,1, 2);
+        database.close();
+        Log.i(ACTIVITY_NAME, "In onDestroy()");
+    }
 
     //Calculate budget data distribution
 
@@ -95,17 +119,19 @@ public class MonthlyBudget extends AppCompatActivity {
         sampleData4 = 0.15f;
         sampleData5 = 0.35f;
         sampleData6 = 0.07f;
-        sampleData7 = 0.08f;
+        sampleData7 = 0.00f;
+        sampleData8 = 0.08f;
 
         //Add category entries to pie chart
         ArrayList<PieEntry> entries = new ArrayList<>();
-        entries.add(new PieEntry(sampleData1, FOOD));
-        entries.add(new PieEntry(sampleData2, EDUCATE));
-        entries.add(new PieEntry(sampleData3, ENTERTAIN));
-        entries.add(new PieEntry(sampleData4, HOUSE));
-        entries.add(new PieEntry(sampleData5, MEDS));
-        entries.add(new PieEntry(sampleData6, UTIL));
-        entries.add(new PieEntry(sampleData7, AVAILABLE));
+        entries.add(new PieEntry(sampleData1, CATEGORIES[0]));
+        entries.add(new PieEntry(sampleData2, CATEGORIES[1]));
+        entries.add(new PieEntry(sampleData3, CATEGORIES[2]));
+        entries.add(new PieEntry(sampleData4, CATEGORIES[3]));
+        entries.add(new PieEntry(sampleData5, CATEGORIES[4]));
+        entries.add(new PieEntry(sampleData6, CATEGORIES[5]));
+        entries.add(new PieEntry(sampleData7, CATEGORIES[6]));
+        entries.add(new PieEntry(sampleData8, CATEGORIES[7]));
 
         //Assign colours to array
         ArrayList<Integer> colours = new ArrayList<>();
@@ -121,7 +147,7 @@ public class MonthlyBudget extends AppCompatActivity {
         PieDataSet dataSet = new PieDataSet(entries, "");
         dataSet.setColors(colours);
 
-        //Settings for piechart (format, text colours, etc...)
+        //Settings for pie chart (format, text colours, etc...)
         PieData data = new PieData(dataSet);
         data.setDrawValues(true);
         data.setValueFormatter(new PercentFormatter(pieChart));
