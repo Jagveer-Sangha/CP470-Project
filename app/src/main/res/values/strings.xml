@@ -18,6 +18,12 @@
     <string name="monthly_budget_title_text">Monthly Budget</string>
     <string name="title_activity_goal">GoalActivity</string>
 
+    <!-- Budget Fragment Strings -->
+    <string name="add_budget_fragment_button">Add</string>
+    <string name="cancel_budget_fragment_button">Cancel</string>
+    <string name="value_budget_fragment_hint">Enter Value</string>
+    <string name="category_text">Choose Expense Category</string>
+
     <!-- Goals Page Strings -->
     <string name="goals_button_string">Goals</string>
     <string name="setGoal">Set Goal</string>

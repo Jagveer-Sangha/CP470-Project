@@ -20,10 +20,11 @@ public class MonthlyBudgetDatabaseHelper extends SQLiteOpenHelper{
     public static final String KEY_ID = "id";
     public static final String KEY_CATEGORY = "CategoryName";
     public static final String KEY_VALUE = "TotalValue";
+    public static final String KEY_PERCENT = "Percentage";
     public static final String KEY_TARGET = "TargetValue";
-    public static final String[] COLUMNS = {KEY_ID, KEY_CATEGORY, KEY_VALUE, KEY_TARGET};
-    private static final String DATABASE_CREATE = "create table " + TABLE_OF_BUDGET_ITEMS + "(" + KEY_ID + " integer primary key autoincrement, " + KEY_CATEGORY + " text not null, " + KEY_VALUE + " float not null, " + KEY_TARGET + " float not null);";
-    private static final String CATEGORIES_CREATE = "insert into " + TABLE_OF_BUDGET_ITEMS + "(" + KEY_CATEGORY + "," + KEY_VALUE + "," + KEY_TARGET + ") VALUES (";
+    public static final String[] COLUMNS = {KEY_ID, KEY_CATEGORY, KEY_VALUE, KEY_PERCENT, KEY_TARGET};
+    private static final String DATABASE_CREATE = "create table " + TABLE_OF_BUDGET_ITEMS + "(" + KEY_ID + " integer primary key autoincrement, " + KEY_CATEGORY + " text not null, " + KEY_VALUE + " float not null, " + KEY_PERCENT + " float not null, " + KEY_TARGET + " float not null);";
+    private static final String CATEGORIES_CREATE = "insert into " + TABLE_OF_BUDGET_ITEMS + "(" + KEY_CATEGORY + "," + KEY_VALUE + "," + KEY_PERCENT + "," + KEY_TARGET + ") VALUES (";
 
     public MonthlyBudgetDatabaseHelper(Context ctx){
         super(ctx, DATABASE_NAME, null, VERSION_NUM);
@@ -34,7 +35,7 @@ public class MonthlyBudgetDatabaseHelper extends SQLiteOpenHelper{
         sqLiteDatabase.execSQL(DATABASE_CREATE);
         //Add categories
         for (int i = 0; i < 8; i++){
-         sqLiteDatabase.execSQL(CATEGORIES_CREATE + "'" + CATEGORIES[i] + "'" + ", 0, 0);");
+         sqLiteDatabase.execSQL(CATEGORIES_CREATE + "'" + CATEGORIES[i] + "'" + ", 0, 0, 0);");
         }
         Log.i("MonthlyBudgetDatabaseHelper", "Calling on Create");
 
