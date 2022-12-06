@@ -94,25 +94,30 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem mi){
         int id = mi.getItemId();
         View view = findViewById(android.R.id.content);
-        Intent intent = new Intent();
+        Intent intent;
         switch(id){
             case R.id.monthly:
                 Log.d("Toolbar", "monthly budget selected");
                 intent = new Intent(MainActivity.this, MonthlyBudget.class);
+                startActivity(intent);
+                return true;
 
             case R.id.goals:
                 Log.d("Toolbar", "goals selected");
                 intent = new Intent(MainActivity.this, GoalActivity.class);
+                startActivity(intent);
+                return true;
 
             case R.id.motivation:
                 Log.d("Toolbar", "motivation selected");
                 intent = new Intent(MainActivity.this, Motivation.class);
+                startActivity(intent);
+                return true;
 
             default:
                 Log.d("Toolbar", "no item selected");
+                return false;
         }
-        startActivity(intent);
-        return true;
     }
 
 
