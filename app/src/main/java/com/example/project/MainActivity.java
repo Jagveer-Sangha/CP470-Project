@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -21,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
     private Button goalsButt ;
     private Button motivationButton;
 
-    Toolbar imageToolbar;
 
 
     @Override
@@ -35,9 +35,6 @@ public class MainActivity extends AppCompatActivity {
          goalsButt = findViewById(R.id.goalsButton);
          motivationButton = findViewById(R.id.motiButton);
 
-         imageToolbar = findViewById(R.id.toolbar);
-
-         setSupportActionBar(imageToolbar);
          motivationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,6 +88,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem mi){
+        int id = mi.getItemId();
+        View view = findViewById(android.R.id.content);
+        Intent intent;
+        switch(id){
+            case R.id.monthly:
+                Log.d("Toolbar", "monthly budget selected");
+                intent = new Intent(MainActivity.this, MonthlyBudget.class);
+                startActivity(intent);
+                return true;
+
+
+        }
         return true;
     }
 
