@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.animation.Easing;
@@ -28,14 +30,17 @@ public class MonthlyBudget extends AppCompatActivity {
     //Initialize variables
     ArrayList <String> BudgetList = new ArrayList<>();
     private static final String ACTIVITY_NAME = "MonthlyBudget";
+    Button budgetButton;
+    Button expenseButton;
 
+    //Database/Date Variables
     MonthlyBudgetDatabaseHelper BudgetDBH;
     SQLiteDatabase BudgetDB;
     int Year = Calendar.getInstance().get(Calendar.YEAR);
-    int Month = Calendar.getInstance().get(Calendar.MONTH) + 1;
+    int Month = Calendar.getInstance().get(Calendar.MONTH) + 1;//Month count starts at 0
     String CurrentDate = Integer.toString(Month)+"/"+Integer.toString(Year);
 
-
+    //Pie Chart Variables
     private PieChart pieChart;
     private float sampleData1, sampleData2, sampleData3, sampleData4, sampleData5, sampleData6, sampleData7, sampleData8;
     public static String FOOD = "Food", EDUCATE = "Education", ENTERTAIN = "Entertainment", HOUSE = "Housing", MEDS = "Medical", UTIL = "Utilities", ETC = "Other", AVAILABLE = "Remaining"; //Various Expense (subject to change)
@@ -45,6 +50,10 @@ public class MonthlyBudget extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_monthly_budget);
+
+        //Find buttons
+        budgetButton = findViewById(R.id.button1);
+        expenseButton = findViewById(R.id.button2);
 
         //Make Database
         BudgetDBH= new MonthlyBudgetDatabaseHelper(this);
@@ -75,9 +84,29 @@ public class MonthlyBudget extends AppCompatActivity {
         c2.close();
 */
 
+
+        //Set up Piechart
         pieChart = findViewById(R.id.pieChart1);
         setupPieChart();
         loadPieChartData();
+
+        //If click budget button bring up budget fragment
+        budgetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i(ACTIVITY_NAME, "Budget Button Clicked");
+
+            }
+        });
+
+        //If click expense button bring up expense fragment
+        expenseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i(ACTIVITY_NAME, "Expense Button Clicked");
+
+            }
+        });
 
     }
     @Override
