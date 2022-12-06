@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/monthly"
+        android:icon="@drawable/calendar"
+        android:title="@string/title_activity_monthly_budget"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/goals"
+        android:icon="@drawable/target"
+        android:title="@string/goals_button_string"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/motivation"
+        android:icon="@drawable/heart"
+        android:title="@string/motivation_button_string"
+        app:showAsAction="ifRoom"/>
+</menu>
