@@ -19,7 +19,7 @@
         android:textSize="20dp" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/button1"
         android:layout_width="102dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -32,7 +32,7 @@
         android:text="@string/add_budget_fragment_button" />
 
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/button2"
         android:layout_width="102dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -43,4 +43,30 @@
         android:layout_marginEnd="42dp"
         android:layout_marginBottom="41dp"
         android:text="@string/cancel_budget_fragment_button" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="176dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textView1"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="118dp"
+        android:layout_marginEnd="117dp"
+        android:layout_marginBottom="251dp"
+        android:fontFamily="sans-serif-black"
+        android:text="@string/current_budget_text"
+        android:textSize="16dp" />
+
+    <Switch
+        android:id="@+id/budget_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textView1"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="47dp"
+        android:layout_marginEnd="276dp"
+        android:layout_marginBottom="93dp"
+        android:text="@string/switch_text" />
 </RelativeLayout>
