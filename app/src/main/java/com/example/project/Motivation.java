@@ -35,6 +35,8 @@ public class Motivation extends AppCompatActivity {
                 int i = (int) (Math.random()*4);
 
                 quotesView.setText(quotes[i]);
+                
+                Toast.makeText(getBaseContext(), "Get Motivated" , Toast.LENGTH_SHORT ).show();
             }
         });
 
