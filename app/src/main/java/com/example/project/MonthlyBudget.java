@@ -1,7 +1,9 @@
 package com.example.project;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -55,8 +57,6 @@ public class MonthlyBudget extends AppCompatActivity {
     private float[] UpdatedPercents = {0,0,0,0,0,0,0,0};
     public float[] CurrentValues = {0,0,0,0,0,0,0,0};
     private float OverUnderBudget = 0;
-    ArrayList<float[]> BudgetAddedParameters;
-    ArrayList<float[]> ExpenseAddedParameters;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,18 +126,19 @@ public class MonthlyBudget extends AppCompatActivity {
         budgetButton.setOnClickListener(view -> {
             Intent intent = new Intent(MonthlyBudget.this, BudgetActivity.class);
             intent.putExtra("Current", CurrentValues);
-            startActivity(intent);
+            setResult(Activity.RESULT_OK, intent);
             Log.i(ACTIVITY_NAME, "Budget Button Clicked");
-            BudgetAddedParameters = ( ArrayList<float[]>) getIntent().getSerializableExtra("Values");
+            startActivityForResult(intent, 2);
+
         });
 
         //If click expense button bring up expense
         expenseButton.setOnClickListener(view -> {
             Intent intent = new Intent(MonthlyBudget.this, ExpenseActivity.class);
             intent.putExtra("Current", CurrentValues);
-            startActivity(intent);
+            setResult(Activity.RESULT_OK, intent);
             Log.i(ACTIVITY_NAME, "Expense Button Clicked");
-            ExpenseAddedParameters = ( ArrayList<float[]>) getIntent().getSerializableExtra("Values");
+            startActivityForResult(intent, 3);
         });
 
 
@@ -152,6 +153,26 @@ public class MonthlyBudget extends AppCompatActivity {
         Log.i(ACTIVITY_NAME, "In onDestroy()");
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //If budget
+        if(resultCode == 2){
+            float[] BudgetAddedParameters = ( float[]) data.getSerializableExtra("Values");
+            addBudget(BudgetAddedParameters);
+            calculateBudget();
+            loadPieChartData();
+        }
+        //If expense
+        else if(resultCode == 3){
+            float[] ExpenseAddedParameters = ( float[]) data.getSerializableExtra("Values");
+            addExpense(ExpenseAddedParameters);
+            calculateBudget();
+            loadPieChartData();
+        }
+
+    }
+
     //Calculate budget data distribution
     private void calculateBudget(){
         float TotalExpenses = 0;
@@ -162,24 +183,46 @@ public class MonthlyBudget extends AppCompatActivity {
 
         //Calculate New Percents when under budget
         if (OverUnderBudget > 0){
-            UpdatedPercents[7] = (CurrentValues[7] - TotalExpenses)/CurrentValues[7];
+            UpdatedPercents[7] = Float.parseFloat(String.format("%.2f",(CurrentValues[7] - TotalExpenses)/CurrentValues[7]));
             for (int i = 0; i < 7; i++){
-                UpdatedPercents[i] = CurrentValues[i] / CurrentValues[7];
+                UpdatedPercents[i] = Float.parseFloat(String.format("%.2f",CurrentValues[i] / CurrentValues[7]));
             }
         }
 
         //Calculate New Percents when over budget
         else{
             for (int i = 0; i < 8; i++){
-                UpdatedPercents[i] = CurrentValues[i]/TotalExpenses;
+                UpdatedPercents[i] = Float.parseFloat(String.format("%.2f",CurrentValues[i]/TotalExpenses));
             }
         }
 
     }
 
     //New budget data added
+    private void addBudget(float[] AddedParameters){
+        //Subtracting from budget
+        if(AddedParameters[0] == 0){
+            Toast.makeText(MonthlyBudget.this, CurrentValues[7] + ":" + AddedParameters[1], Toast.LENGTH_LONG).show();
+            CurrentValues[7] =  CurrentValues[7] - AddedParameters[1];
+        }
 
+        //Adding to budget
+        else{
+            CurrentValues[7] += AddedParameters[1];
+        }
+    }
     //New expense data added
+    private void addExpense(float[] AddedParameters){
+        //Subtracting from expense
+        if(AddedParameters[0] == 0){
+            CurrentValues[(int)AddedParameters[2]] -= AddedParameters[1];
+        }
+
+        //Adding to expense
+        else{
+            CurrentValues[(int)AddedParameters[2]] += AddedParameters[1];
+        }
+    }
 
     //Class to limit decimal places in edittext
     public static class DecimalDigitsInputFilter implements InputFilter {

@@ -41,7 +41,7 @@ public class BudgetActivity extends AppCompatActivity {
         String text = getString(R.string.current_budget_text) + " " + Float.toString(CurrentValues[7]);
         budgetTextView.setText(text);
 
-        //Holds values of the budget
+        //Holds values of the budget {Switchstate, value}
         float[] budgetParameters = {0,0};
 
 
@@ -69,7 +69,7 @@ public class BudgetActivity extends AppCompatActivity {
                     Log.i(ACTIVITY_NAME, "Budget Confirm Button Clicked");
                     Intent resultIntent = new Intent(  );
                     resultIntent.putExtra("Values", budgetParameters);
-                    setResult(Activity.RESULT_OK, resultIntent);
+                    setResult(2, resultIntent);
                     Toast.makeText(BudgetActivity.this, R.string.toast_confirm, Toast.LENGTH_LONG).show();
                     finish();
                 }

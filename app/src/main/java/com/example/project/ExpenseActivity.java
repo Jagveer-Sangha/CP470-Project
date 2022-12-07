@@ -50,7 +50,7 @@ public class ExpenseActivity extends AppCompatActivity {
         text = expenseTextView.getText().toString() + " " + Float.toString(CurrentValues[0]);
         expenseTextView.setText(text);
 
-        //Holds values of the expense
+        //Holds values of the expense {Switchstate, value, category}
         float[] expenseParameters = {0,0,0};
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.categories, android.R.layout.simple_spinner_item);
@@ -101,7 +101,7 @@ public class ExpenseActivity extends AppCompatActivity {
                         Log.i(ACTIVITY_NAME, "Expense Confirm Button Clicked");
                         Intent resultIntent = new Intent(  );
                         resultIntent.putExtra("Values", expenseParameters);
-                        setResult(Activity.RESULT_OK, resultIntent);
+                        setResult(3, resultIntent);
                         Toast.makeText(getBaseContext(), R.string.toast_confirm , Toast.LENGTH_SHORT ).show();
                         finish();
                 }
