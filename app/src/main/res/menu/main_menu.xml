@@ -5,15 +5,20 @@
         android:id="@+id/monthly"
         android:icon="@drawable/calendar"
         android:title="@string/title_activity_monthly_budget"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
     <item
         android:id="@+id/goals"
         android:icon="@drawable/target"
         android:title="@string/goals_button_string"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always" />
     <item
         android:id="@+id/motivation"
         android:icon="@drawable/heart"
         android:title="@string/motivation_button_string"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/info"
+        android:icon="@drawable/info"
+        android:title="@string/information"
+        app:showAsAction="always" />
 </menu>

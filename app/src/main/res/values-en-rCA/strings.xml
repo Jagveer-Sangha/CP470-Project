@@ -42,7 +42,8 @@
     <string name="motivate_button">Get Motivated</string>
 
     <!-- Main Page Strings   -->
-    <string name="Title">Budgit</string>
+    <string name="Title">Budget</string>
+    <string name="information">Info</string>
 
     <!-- String Array -->
     <string-array name="categories">
@@ -54,5 +55,6 @@
         <item>Utilities</item>
         <item>Etc</item>
     </string-array>
+    <string name="infoTitle">Information</string>
 
 </resources>

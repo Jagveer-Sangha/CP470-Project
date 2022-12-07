@@ -1,16 +1,20 @@
 package com.example.project;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
-import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.Objects;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -28,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Main Page");
         Log.i(ACTIVITY_NAME, "In onCreate()");
 
 //         one = findViewById(R.id.button1);
@@ -93,30 +98,45 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean onOptionsItemSelected(MenuItem mi){
         int id = mi.getItemId();
-        View view = findViewById(android.R.id.content);
         Intent intent;
-        switch(id){
-            case R.id.monthly:
-                Log.d("Toolbar", "monthly budget selected");
-                intent = new Intent(MainActivity.this, MonthlyBudget.class);
-                startActivity(intent);
-                return true;
 
-            case R.id.goals:
-                Log.d("Toolbar", "goals selected");
-                intent = new Intent(MainActivity.this, GoalActivity.class);
-                startActivity(intent);
-                return true;
+        if(id == R.id.monthly) {
+            Log.d("Toolbar", "monthly budget selected");
+            intent = new Intent(MainActivity.this, MonthlyBudget.class);
+            startActivity(intent);
+            return true;
+        }
+        else if(id == R.id.goals) {
+            Log.d("Toolbar", "goals selected");
+            intent = new Intent(MainActivity.this, GoalActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        else if(id == R.id.motivation) {
+            Log.d("Toolbar", "motivation selected");
+            intent = new Intent(MainActivity.this, Motivation.class);
+            startActivity(intent);
+            return true;
+        }
+        else if(id == R.id.info) {
+            Log.d("Toolbar", "information selected");
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder.setTitle(R.string.infoTitle);
 
-            case R.id.motivation:
-                Log.d("Toolbar", "motivation selected");
-                intent = new Intent(MainActivity.this, Motivation.class);
-                startActivity(intent);
-                return true;
-
-            default:
-                Log.d("Toolbar", "no item selected");
-                return false;
+            builder.setMessage(Html.fromHtml("<b>Authors: </b>Jagveer Sangha, Terry Tran, Adrian Vuong, Talha Safi, Karan Singh\n<b>Version:</b> 1.0", 0));
+            builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    //do nothing
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            return true;
+        }
+        else{
+            Log.d("Toolbar", "no item selected");
+            return false;
         }
     }
 
