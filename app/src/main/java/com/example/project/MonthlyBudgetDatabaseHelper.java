@@ -13,9 +13,11 @@ import java.util.Date;
 public class MonthlyBudgetDatabaseHelper extends SQLiteOpenHelper{
     private static final String DATABASE_NAME = "BudgetDatabase.db";
     private static final int VERSION_NUM = 1;
+    //Initialize date values
     private static final int Year = Calendar.getInstance().get(Calendar.YEAR);
-    private static final int Month = Calendar.getInstance().get(Calendar.MONTH) + 1;
+    private static final int Month = Calendar.getInstance().get(Calendar.MONTH) + 1; //Month is counted from 0
 
+    //Initialize database helper variables
     public static final String TABLE_OF_BUDGET_ITEMS =  "M"+Integer.toString(Month)+"Y"+Integer.toString(Year);//Set to month and year
     public static final String KEY_ID = "id";
     public static final String KEY_CATEGORY = "CategoryName";

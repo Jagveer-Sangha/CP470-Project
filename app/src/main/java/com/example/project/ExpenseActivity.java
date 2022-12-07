@@ -31,10 +31,12 @@ public class ExpenseActivity extends AppCompatActivity {
 
     String text;
 
+    //On activity creation check objects for current value to determine if legitimate entry, if legitimate pass to MonthlyBudgetActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_expense);
+        //Find objects
         expenseConfirm = findViewById(R.id.expense_button1);
         expenseCancel = findViewById(R.id.expense_button2);
         expenseSwitch = findViewById(R.id.expense_switch);
@@ -45,7 +47,7 @@ public class ExpenseActivity extends AppCompatActivity {
         expenseEditText.setFilters(new InputFilter[] {new MonthlyBudget.DecimalDigitsInputFilter(9,2)});
 
 
-        //Display current value
+        //Retrieve and Display current value
         float[] CurrentValues = (float[]) getIntent().getSerializableExtra("Current");
         text = expenseTextView.getText().toString() + " " + Float.toString(CurrentValues[0]);
         expenseTextView.setText(text);
@@ -53,11 +55,13 @@ public class ExpenseActivity extends AppCompatActivity {
         //Holds values of the expense {Switchstate, value, category}
         float[] expenseParameters = {0,0,0};
 
+        //Populate spinner with categories
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.categories, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         expenseSpinner.setAdapter(adapter);
         currentCategory = expenseSpinner.getSelectedItem().toString();
 
+        //Check spinner selection and update textview to display appropriate value
         expenseSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -74,7 +78,7 @@ public class ExpenseActivity extends AppCompatActivity {
             }
         });
 
-        //Expense Confirm button
+        //When Expense Confirm button clicked run checks on parameters to determine if entry is acceptable (possible)
         expenseConfirm.setOnClickListener(view -> {
             //No value in edittext field
             if(expenseEditText.getText().toString().equals("") ||  Float.parseFloat(expenseEditText.getText().toString()) == 0){
@@ -92,6 +96,7 @@ public class ExpenseActivity extends AppCompatActivity {
                 else{
                     expenseParameters[0] = 0;
                 }
+                //Check if addition or subtraction is possible (no negative values)
                 if(switchState || (switchState == false && Float.parseFloat(expenseEditText.getText().toString()) < CurrentValues[expenseSpinner.getSelectedItemPosition()])){
                     //Grab expense value
                     expenseParameters[1] = Float.parseFloat(expenseEditText.getText().toString());
@@ -105,13 +110,14 @@ public class ExpenseActivity extends AppCompatActivity {
                         Toast.makeText(getBaseContext(), R.string.toast_confirm , Toast.LENGTH_SHORT ).show();
                         finish();
                 }
+                //Else display toast saying subtraction not possible
                 else{
                     Toast.makeText(getBaseContext(), R.string.toast_subtract, Toast.LENGTH_SHORT ).show();
                 }
             }
         });
 
-        //Expense Cancel button
+        //When Expense Cancel button clicked finish current activity and return to previous activity
         expenseCancel.setOnClickListener(view -> {
             Log.i(ACTIVITY_NAME, "Expense Cancel Button Clicked");
             Toast.makeText(getBaseContext(), R.string.toast_cancel, Toast.LENGTH_SHORT ).show();

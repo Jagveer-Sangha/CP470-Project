@@ -61,6 +61,7 @@ public class MonthlyBudget extends AppCompatActivity {
     public float[] CurrentValues = {0,0,0,0,0,0,0,0};
     private float OverUnderBudget = 0;
 
+    //On activity creations retrieve database data and generate pie chart
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -139,7 +140,7 @@ public class MonthlyBudget extends AppCompatActivity {
 
     }
 
-
+    //When activity is closed save/update database with current data
     @Override
     protected void onDestroy(){
         updateDatabase();

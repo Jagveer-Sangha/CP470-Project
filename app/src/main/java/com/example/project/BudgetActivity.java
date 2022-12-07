@@ -24,9 +24,11 @@ public class BudgetActivity extends AppCompatActivity {
     TextView budgetTextView;
     EditText budgetEditText;
 
+    //On activity creation check objects for current value to determine if legitimate entry, if legitimate pass to MonthlyBudgetActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Find Objects
         setContentView(R.layout.activity_add_budget);
         budgetConfirm = findViewById(R.id.budget_button1);
         budgetCancel = findViewById(R.id.budget_button2);
@@ -36,7 +38,7 @@ public class BudgetActivity extends AppCompatActivity {
         //Limit values to 9 digits before decimal and 2 digits after decimal
         budgetEditText.setFilters(new InputFilter[] {new MonthlyBudget.DecimalDigitsInputFilter(9,2)});
 
-        //Display current value
+        //Retrieve and Display current value
         float[] CurrentValues = (float[]) getIntent().getSerializableExtra("Current");
         String text = getString(R.string.current_budget_text) + " " + Float.toString(CurrentValues[7]);
         budgetTextView.setText(text);
@@ -45,7 +47,7 @@ public class BudgetActivity extends AppCompatActivity {
         float[] budgetParameters = {0,0};
 
 
-        //Budget Confirm button
+        //When Budget Confirm button clicked run checks on parameters to determine if entry is acceptable (possible)
         budgetConfirm.setOnClickListener(view -> {
             //No value in edittext field
             if(budgetEditText.getText().toString().equals("") || Float.parseFloat(budgetEditText.getText().toString()) == 0){
@@ -63,6 +65,7 @@ public class BudgetActivity extends AppCompatActivity {
                     else{
                         budgetParameters[0] = 0;
                     }
+                //Check if addition or subtraction is possible (no negative values)
                 if(switchState || (switchState == false && Float.parseFloat(budgetEditText.getText().toString()) < CurrentValues[7])){
                     //Grab budget value
                     budgetParameters[1] = Float.parseFloat(budgetEditText.getText().toString());
@@ -73,13 +76,14 @@ public class BudgetActivity extends AppCompatActivity {
                     Toast.makeText(BudgetActivity.this, R.string.toast_confirm, Toast.LENGTH_LONG).show();
                     finish();
                 }
+                //Else display toast saying subtraction not possible
                 else{
                     Toast.makeText(BudgetActivity.this, R.string.toast_subtract, Toast.LENGTH_LONG).show();
                 }
             }
         });
 
-        //Budget Cancel button
+        //When Budget Cancel button clicked finish current activity and return to previous activity
         budgetCancel.setOnClickListener(view -> {
             Log.i(ACTIVITY_NAME, "Budget Cancel Button Clicked");
             Toast.makeText(BudgetActivity.this, R.string.toast_cancel, Toast.LENGTH_LONG).show();
