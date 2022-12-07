@@ -24,6 +24,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class GoalActivity extends AppCompatActivity {
 
@@ -41,8 +42,7 @@ public class GoalActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_goal);
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
 
 
@@ -79,17 +79,20 @@ public class GoalActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String goalVal = inputBox.getText().toString();
-                goalsListStrg.add(goalVal);
+                if(!goalVal.isEmpty()){
+                    goalsListStrg.add(goalVal);
 
-                ContentValues val = new ContentValues();
-                val.put(GoalsDatabaseHelper.KEY_MESSAGE, inputBox.getText().toString());
-                long insertId = database.insert(GoalsDatabaseHelper.TABLE_OF_GOALS_ITEMS, null, val);
-                Cursor c2 = database.query(GoalsDatabaseHelper.TABLE_OF_GOALS_ITEMS, null, GoalsDatabaseHelper.KEY_ID + "=" + insertId, null, null, null, null);
-                c2.moveToFirst();
-                c2.close();
+                    ContentValues val = new ContentValues();
+                    val.put(GoalsDatabaseHelper.KEY_MESSAGE, inputBox.getText().toString());
+                    long insertId = database.insert(GoalsDatabaseHelper.TABLE_OF_GOALS_ITEMS, null, val);
+                    Cursor c2 = database.query(GoalsDatabaseHelper.TABLE_OF_GOALS_ITEMS, null, GoalsDatabaseHelper.KEY_ID + "=" + insertId, null, null, null, null);
+                    c2.moveToFirst();
+                    c2.close();
 
-                goalAdapter.notifyDataSetChanged();
-                inputBox.setText("");
+                    goalAdapter.notifyDataSetChanged();
+                    inputBox.setText("");
+                }
+
 
             }
 
@@ -142,7 +145,7 @@ public class GoalActivity extends AppCompatActivity {
                 }
                 if(itemId > -1) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(GoalActivity.this);
-                    builder.setMessage("Do You Wan't to Delete this goal?")
+                    builder.setMessage("Do you Want to Delete this goal?")
                     .setTitle("Delete Goal")
                     .setCancelable(false)
                     .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
@@ -211,10 +214,10 @@ public class GoalActivity extends AppCompatActivity {
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
             LayoutInflater inflater = GoalActivity.this.getLayoutInflater();
 
-            View result = null;
-            result = inflater.inflate(R.layout.activity_goals_list_items, null);
 
-            TextView goalStr = (TextView) result.findViewById(R.id.goalText);
+            View result = inflater.inflate(R.layout.activity_goals_list_items, null);
+
+            TextView goalStr = result.findViewById(R.id.goalText);
             goalStr.setText(getItem(position));
             return result;
         }

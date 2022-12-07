@@ -1,6 +1,7 @@
 package com.example.project;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -13,6 +14,7 @@ import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -66,7 +68,8 @@ public class MonthlyBudget extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_monthly_budget);
-
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
         //Find objects
         budgetButton = findViewById(R.id.button1);
         expenseButton = findViewById(R.id.button2);
@@ -138,6 +141,13 @@ public class MonthlyBudget extends AppCompatActivity {
         });
 
 
+    }
+    public boolean onOptionsItemSelected(MenuItem mi){
+        if(mi.getItemId() == android.R.id.home){
+            this.finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(mi);
     }
 
     //When activity is closed save/update database with current data
@@ -305,7 +315,7 @@ public class MonthlyBudget extends AppCompatActivity {
         }
 
         //If all values are zero (i.e. empty chart)
-        if(emptyChart == true){
+        if(emptyChart){
             entries.add(new PieEntry(100, "Empty"));
         }
 

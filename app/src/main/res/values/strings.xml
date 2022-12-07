@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Project</string>
+    <string name="app_name">uBudgIt</string>
     <string name="title_activity_monthly_budget">MonthlyBudget</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -42,7 +42,7 @@
 
 
     <!-- Main Page Strings   -->
-    <string name="Title">Budget</string>
+    <string name="Title">uBudgIt</string>
     <string name="information">Info</string>
     <string name="infoTitle">Information</string>
     <!-- String Array -->
