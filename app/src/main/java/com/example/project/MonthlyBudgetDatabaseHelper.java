@@ -30,6 +30,7 @@ public class MonthlyBudgetDatabaseHelper extends SQLiteOpenHelper{
         super(ctx, DATABASE_NAME, null, VERSION_NUM);
     }
 
+    //Create database using database string statement, makes table with date as name and the correct parameters
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(DATABASE_CREATE);
@@ -41,6 +42,7 @@ public class MonthlyBudgetDatabaseHelper extends SQLiteOpenHelper{
 
     }
 
+    //Replaces the previous table of the same name for the updated table
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVer, int newVer) {
         Log.i("MonthlyBudgetDatabaseHelper", "Calling on Upgrade, oldVersion = "+ oldVer +" newVersion = "+newVer);

@@ -36,12 +36,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="100dp"
-        android:layout_marginEnd="100dp"
+        android:text="@string/monthly_budget_title_text"
         android:textAlignment="center"
-        android:textSize="20dp"
         android:textColor="@color/black"
-        android:text="@string/monthly_budget_title_text" />
+        android:textSize="20dp" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -57,8 +55,9 @@
         android:layout_height="642dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="15dp"
+        android:layout_below="@id/textView1"
+        android:layout_marginTop="0dp"
         android:layout_marginEnd="0dp"
-        android:layout_marginBottom="45dp" />
+        android:layout_marginBottom="47dp" />
 
 </RelativeLayout>

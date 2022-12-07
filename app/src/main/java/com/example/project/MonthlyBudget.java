@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.animation.Easing;
@@ -43,13 +44,14 @@ public class MonthlyBudget extends AppCompatActivity {
     Button budgetButton;
     Button expenseButton;
     ProgressBar progBar;
+    TextView monthlyBudgetDate;
 
     //Database/Date Variables
     MonthlyBudgetDatabaseHelper BudgetDBH;
     SQLiteDatabase BudgetDB;
-    //int Year = Calendar.getInstance().get(Calendar.YEAR);
-    //int Month = Calendar.getInstance().get(Calendar.MONTH) + 1;//Month count starts at 0
-    //String CurrentDate = Integer.toString(Month)+"/"+Integer.toString(Year);
+    int Year = Calendar.getInstance().get(Calendar.YEAR);
+    int Month = Calendar.getInstance().get(Calendar.MONTH) + 1;//Month count starts at 0
+    String CurrentDate = Integer.toString(Month)+"/"+Integer.toString(Year);
 
     //Pie Chart Variables
     private PieChart pieChart;
@@ -64,12 +66,14 @@ public class MonthlyBudget extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_monthly_budget);
 
-        //Find buttons
+        //Find objects
         budgetButton = findViewById(R.id.button1);
         expenseButton = findViewById(R.id.button2);
-
-
+        monthlyBudgetDate = findViewById(R.id.textView1);
         progBar = findViewById(R.id.progressBar);
+
+        //Set Title
+        monthlyBudgetDate.setText(monthlyBudgetDate.getText().toString() + ": " + CurrentDate);
 
         //Update Progress Bar
         progBar.setVisibility(View.VISIBLE);
@@ -134,6 +138,8 @@ public class MonthlyBudget extends AppCompatActivity {
 
 
     }
+
+
     @Override
     protected void onDestroy(){
         updateDatabase();
@@ -143,6 +149,7 @@ public class MonthlyBudget extends AppCompatActivity {
         super.onDestroy();
     }
 
+    //When a new budget or expense entry is made add to data
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -163,9 +170,10 @@ public class MonthlyBudget extends AppCompatActivity {
 
     }
 
-    //Calculate budget data distribution
+    //Calculate budget data distribution between the categories in order to calculate the percentages of each category for the pie chart
     private void calculateBudget(){
         float TotalExpenses = 0;
+        //Calculate total expense cost
         for (int i = 0; i < 7; i++){
             TotalExpenses += CurrentValues[i];
         }
@@ -188,7 +196,7 @@ public class MonthlyBudget extends AppCompatActivity {
 
     }
 
-    //New budget data added
+    //Change the budget data to the appropriate amount based on the entry parameters ({Add/Subtract, Value})
     private void addBudget(float[] AddedParameters){
         //Subtracting from budget
         if(AddedParameters[0] == 0){
@@ -207,7 +215,7 @@ public class MonthlyBudget extends AppCompatActivity {
             CurrentValues[7] = temp3/100;
         }
     }
-    //New expense data added
+    //Change the expense data to the appropriate amount based on the entry parameters ({Add/Subtract, Value, Category})
     private void addExpense(float[] AddedParameters){
         //Subtracting from expense
         if(AddedParameters[0] == 0){
@@ -226,7 +234,7 @@ public class MonthlyBudget extends AppCompatActivity {
         }
     }
 
-    //Class to limit decimal places in edittext
+    //To limit the decimal places before and after the decimal on entries
     public static class DecimalDigitsInputFilter implements InputFilter {
 
         Pattern mPattern;
@@ -246,7 +254,7 @@ public class MonthlyBudget extends AppCompatActivity {
 
     }
 
-    //Update Database
+    //Update the database by add each category's values as an individual row
     private void updateDatabase(){
 
         ContentValues val = new ContentValues();
@@ -263,7 +271,7 @@ public class MonthlyBudget extends AppCompatActivity {
 
     }
 
-    //Set up pie chart
+    //Set up the parameters and attributes of the pie chart
     private void setupPieChart(){
         pieChart.setDrawHoleEnabled(true);
         pieChart.setUsePercentValues(true);
@@ -281,7 +289,7 @@ public class MonthlyBudget extends AppCompatActivity {
         lege.setEnabled(true);
     }
 
-    //Load budget data into pie chart to display
+    //Load budget data into pie chart by using the calculated percents to make entries into the pie chart
     private void loadPieChartData(){
         //Add category entries to pie chart
         ArrayList<PieEntry> entries = new ArrayList<>();
