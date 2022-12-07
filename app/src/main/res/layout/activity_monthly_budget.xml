@@ -16,7 +16,7 @@
         android:layout_marginStart="0dp"
         android:layout_marginBottom="0dp"
         android:backgroundTint="@color/green"
-        android:text="@string/monthly_budget_expense_button" />
+        android:text="@string/monthly_budget_budget_button" />
 
     <Button
         android:id="@+id/button2"
@@ -42,6 +42,14 @@
         android:textSize="20dp"
         android:textColor="@color/black"
         android:text="@string/monthly_budget_title_text" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="invisible" />
 
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/pieChart1"

@@ -2,7 +2,6 @@ package com.example.project;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -10,6 +9,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.animation.Easing;
@@ -28,23 +31,25 @@ import java.util.ArrayList;
 public class MonthlyBudget extends AppCompatActivity {
 
     //Initialize variables
-    ArrayList <String> BudgetList = new ArrayList<>();
     private static final String ACTIVITY_NAME = "MonthlyBudget";
     Button budgetButton;
     Button expenseButton;
+    ProgressBar progBar;
 
     //Database/Date Variables
     MonthlyBudgetDatabaseHelper BudgetDBH;
     SQLiteDatabase BudgetDB;
-    int Year = Calendar.getInstance().get(Calendar.YEAR);
-    int Month = Calendar.getInstance().get(Calendar.MONTH) + 1;//Month count starts at 0
-    String CurrentDate = Integer.toString(Month)+"/"+Integer.toString(Year);
+    //int Year = Calendar.getInstance().get(Calendar.YEAR);
+    //int Month = Calendar.getInstance().get(Calendar.MONTH) + 1;//Month count starts at 0
+    //String CurrentDate = Integer.toString(Month)+"/"+Integer.toString(Year);
 
     //Pie Chart Variables
     private PieChart pieChart;
-    private float sampleData1, sampleData2, sampleData3, sampleData4, sampleData5, sampleData6, sampleData7, sampleData8;
     public static String FOOD = "Food", EDUCATE = "Education", ENTERTAIN = "Entertainment", HOUSE = "Housing", MEDS = "Medical", UTIL = "Utilities", ETC = "Other", AVAILABLE = "Remaining"; //Various Expense (subject to change)
-    public static String[] CATEGORIES = {FOOD, EDUCATE, ENTERTAIN, HOUSE, MEDS, UTIL, ETC, AVAILABLE};
+    public static String[] CATEGORIES = {FOOD, EDUCATE, ENTERTAIN, HOUSE, MEDS, UTIL, ETC, AVAILABLE};//Available holds budget
+    private float[] UpdatedPercents = {0,0,0,0,0,0,0,0};
+    private float[] CurrentValues = {0,0,0,0,0,0,0,0};
+    private float OverUnderBudget = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,24 +60,49 @@ public class MonthlyBudget extends AppCompatActivity {
         budgetButton = findViewById(R.id.button1);
         expenseButton = findViewById(R.id.button2);
 
+
+        progBar = findViewById(R.id.progressBar);
+
+        //Update Progress Bar
+        progBar.setVisibility(View.VISIBLE);
+        progBar.setProgress(0);
+
         //Make Database
         BudgetDBH= new MonthlyBudgetDatabaseHelper(this);
         BudgetDB = BudgetDBH.getWritableDatabase();
+
+        progBar.setProgress(25);
 
         //Get Database items from current month's database
         Cursor c = BudgetDB.rawQuery("select * from "+ MonthlyBudgetDatabaseHelper.TABLE_OF_BUDGET_ITEMS + ";", null);
         c.moveToFirst();
 
-        //
-        /*while(!c.isAfterLast()){
-            String str = c.getString((c.getColumnIndexOrThrow(MonthlyBudgetDatabaseHelper.KEY_CATEGORY)));
-            //BudgetList.add(str);
-            Log.i(ACTIVITY_NAME, "SQL MESSAGE: " + c.getString(c.getColumnIndexOrThrow(MonthlyBudgetDatabaseHelper.KEY_CATEGORY)));
-            Log.i(ACTIVITY_NAME, "Cursor Column Count =" + c.getColumnCount());
+        //Get all current expense and budget values
+        int count = 0;
+        while(!c.isAfterLast()){
+            CurrentValues[count] = c.getFloat((c.getColumnIndexOrThrow(MonthlyBudgetDatabaseHelper.KEY_VALUE)));
+            Log.i(ACTIVITY_NAME, "SQL Category & Value: " + c.getString(c.getColumnIndexOrThrow(MonthlyBudgetDatabaseHelper.KEY_CATEGORY)) + ", " + c.getFloat((c.getColumnIndexOrThrow(MonthlyBudgetDatabaseHelper.KEY_VALUE))));
             c.moveToNext();
+            count += 1;
         }
+        c.close();
+        progBar.setProgress(50);
 
+        //Calculate Percents
+        calculateBudget();
 
+        progBar.setProgress(75);
+
+        //Set up Piechart
+        pieChart = findViewById(R.id.pieChart1);
+        setupPieChart();
+
+        //Load Piechart
+        progBar.setProgress(100);
+        progBar.setVisibility(View.INVISIBLE);
+        loadPieChartData();
+
+        /*
          String goalVal = ;
         BudgetList.add(goalVal);
 
@@ -85,28 +115,18 @@ public class MonthlyBudget extends AppCompatActivity {
 */
 
 
-        //Set up Piechart
-        pieChart = findViewById(R.id.pieChart1);
-        setupPieChart();
-        loadPieChartData();
-
-        //If click budget button bring up budget fragment
-        budgetButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.i(ACTIVITY_NAME, "Budget Button Clicked");
-
-            }
+        //If click budget button bring up budget
+        budgetButton.setOnClickListener(view -> {
+            setContentView(R.layout.activity_add_budget);
+            Log.i(ACTIVITY_NAME, "Budget Button Clicked");
         });
 
-        //If click expense button bring up expense fragment
-        expenseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.i(ACTIVITY_NAME, "Expense Button Clicked");
-
-            }
+        //If click expense button bring up expense
+        expenseButton.setOnClickListener(view -> {
+            setContentView(R.layout.activity_add_expense);
+            Log.i(ACTIVITY_NAME, "Expense Button Clicked");
         });
+
 
     }
     @Override
@@ -120,6 +140,29 @@ public class MonthlyBudget extends AppCompatActivity {
     }
 
     //Calculate budget data distribution
+    private void calculateBudget(){
+        float TotalExpenses = 0;
+        for (int i = 0; i < 7; i++){
+            TotalExpenses += CurrentValues[i];
+        }
+        OverUnderBudget = CurrentValues[7] - TotalExpenses;
+
+        //Calculate New Percents when under budget
+        if (OverUnderBudget > 0){
+            UpdatedPercents[7] = (CurrentValues[7] - TotalExpenses)/CurrentValues[7];
+            for (int i = 0; i < 7; i++){
+                UpdatedPercents[i] = CurrentValues[i] / CurrentValues[7];
+            }
+        }
+
+        //Calculate New Percents when over budget
+        else{
+            for (int i = 0; i < 8; i++){
+                UpdatedPercents[i] = CurrentValues[i]/TotalExpenses;
+            }
+        }
+
+    }
 
     //Set up pie chart
     private void setupPieChart(){
@@ -141,26 +184,22 @@ public class MonthlyBudget extends AppCompatActivity {
 
     //Load budget data into pie chart to display
     private void loadPieChartData(){
-        //Set random data values
-        sampleData1 = 0.2f;
-        sampleData2 = 0.1f;
-        sampleData3 = 0.05f;
-        sampleData4 = 0.15f;
-        sampleData5 = 0.35f;
-        sampleData6 = 0.07f;
-        sampleData7 = 0.00f;
-        sampleData8 = 0.08f;
-
         //Add category entries to pie chart
         ArrayList<PieEntry> entries = new ArrayList<>();
-        entries.add(new PieEntry(sampleData1, CATEGORIES[0]));
-        entries.add(new PieEntry(sampleData2, CATEGORIES[1]));
-        entries.add(new PieEntry(sampleData3, CATEGORIES[2]));
-        entries.add(new PieEntry(sampleData4, CATEGORIES[3]));
-        entries.add(new PieEntry(sampleData5, CATEGORIES[4]));
-        entries.add(new PieEntry(sampleData6, CATEGORIES[5]));
-        entries.add(new PieEntry(sampleData7, CATEGORIES[6]));
-        entries.add(new PieEntry(sampleData8, CATEGORIES[7]));
+        int count = 0;
+        boolean emptyChart = true;
+        for (float var: UpdatedPercents){
+            if(var > 0){
+                emptyChart = false;
+                entries.add(new PieEntry(var, CATEGORIES[count]));
+            }
+            count += 1;
+        }
+
+        //If all values are zero (i.e. empty chart)
+        if(emptyChart == true){
+            entries.add(new PieEntry(100, "Empty"));
+        }
 
         //Assign colours to array
         ArrayList<Integer> colours = new ArrayList<>();
