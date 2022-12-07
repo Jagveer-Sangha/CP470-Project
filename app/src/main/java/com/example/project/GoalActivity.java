@@ -2,11 +2,13 @@ package com.example.project;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ClipData;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -34,6 +36,7 @@ public class GoalActivity extends AppCompatActivity {
 
     GoalsDatabaseHelper goalsDB;
     SQLiteDatabase database;
+    int itemId;
 
 
 
@@ -94,32 +97,84 @@ public class GoalActivity extends AppCompatActivity {
 
 
         });
-        goalsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//        goalsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
+//
+//                String val = goalsList.getItemAtPosition(pos).toString();
+////                goalsListStrg.remove(val);
+//
+//                Cursor data = goalsDB.getItemId(val);
+//                int itemId = -1;
+//                while(data.moveToNext()) {
+//                    itemId = data.getInt(0);
+//
+//                }
+//                if(itemId > -1){
+//                    goalsListStrg.remove(val);
+////                    Log.d(ACTIVITY_NAME, "onItemClick: The ID is " + itemId);
+////                    Intent editScreenIntent = new Intent(GoalActivity.this, EditGoalsActivity.class);
+////                    editScreenIntent.putExtra("id", itemId);
+////                    editScreenIntent.putExtra("item", val);
+////                    editScreenIntent.putExtra("itemList", goalsListStrg);
+////
+////                    startActivity(editScreenIntent);
+//                    database.delete(GoalsDatabaseHelper.TABLE_OF_GOALS_ITEMS, GoalsDatabaseHelper.KEY_ID + "=?", new String[]{""+itemId});
+//                    goalAdapter.notifyDataSetChanged();
+//
+//                }
+//
+//
+//
+//
+//            }
+//        });
+
+        goalsList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int pos, long id) {
                 String val = goalsList.getItemAtPosition(pos).toString();
+//                goalsListStrg.remove(val);
+
                 Cursor data = goalsDB.getItemId(val);
-                int itemId = -1;
+                itemId = -1;
                 while(data.moveToNext()) {
                     itemId = data.getInt(0);
 
                 }
-                if(itemId > -1){
-                    Log.d(ACTIVITY_NAME, "onItemClick: The ID is " + itemId);
-                    Intent editScreenIntent = new Intent(GoalActivity.this, EditGoalsActivity.class);
-                    editScreenIntent.putExtra("id", itemId);
-                    editScreenIntent.putExtra("item", val);
-                    editScreenIntent.putExtra("itemList", goalsListStrg);
+                if(itemId > -1) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(GoalActivity.this);
+                    builder.setMessage("Do You Wan't to Delete this goal?")
+                    .setTitle("Delete Goal")
+                    .setCancelable(false)
+                    .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            goalsListStrg.remove(val);
+    //                    Log.d(ACTIVITY_NAME, "onItemClick: The ID is " + itemId);
+    //                    Intent editScreenIntent = new Intent(GoalActivity.this, EditGoalsActivity.class);
+    //                    editScreenIntent.putExtra("id", itemId);
+    //                    editScreenIntent.putExtra("item", val);
+    //                    editScreenIntent.putExtra("itemList", goalsListStrg);
+    //
+    //                    startActivity(editScreenIntent);
+                            database.delete(GoalsDatabaseHelper.TABLE_OF_GOALS_ITEMS, GoalsDatabaseHelper.KEY_ID + "=?", new String[]{"" + itemId});
+                            goalAdapter.notifyDataSetChanged();
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    }).create().show();
 
-                    startActivity(editScreenIntent);
                 }
 
 
-
+                    return false;
             }
         });
-
-
 
     }
 

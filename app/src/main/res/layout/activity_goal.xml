@@ -40,17 +40,8 @@
 
         <ListView
             android:id="@+id/goalsList"
-            android:layout_width="399dp"
-            android:layout_height="620dp" />
+            android:layout_width="match_parent"
+            android:layout_height="661dp" />
 
-        <Button
-            android:id="@+id/deleteGoal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="7dp"
-            android:layout_marginBottom="60dp"
-            android:text="@string/delete_Goal" />
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
