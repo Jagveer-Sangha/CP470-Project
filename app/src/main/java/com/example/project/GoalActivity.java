@@ -2,14 +2,13 @@ package com.example.project;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.ClipData;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -23,9 +22,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -45,13 +41,15 @@ public class GoalActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_goal);
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
 
 
 
         EditText inputBox = findViewById(R.id.inputBox);
         Button goalEnter = findViewById(R.id.goalsenter);
         ListView goalsList = findViewById(R.id.goalsList);
-        Button goalDelete = findViewById(R.id.deleteGoal);
         goalsDB = new GoalsDatabaseHelper(this);
         database = goalsDB.getWritableDatabase();
 
