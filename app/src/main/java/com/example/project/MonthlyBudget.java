@@ -202,25 +202,37 @@ public class MonthlyBudget extends AppCompatActivity {
     private void addBudget(float[] AddedParameters){
         //Subtracting from budget
         if(AddedParameters[0] == 0){
-            Toast.makeText(MonthlyBudget.this, CurrentValues[7] + ":" + AddedParameters[1], Toast.LENGTH_LONG).show();
-            CurrentValues[7] =  CurrentValues[7] - AddedParameters[1];
+            //Toast.makeText(MonthlyBudget.this, CurrentValues[7] + ":" + AddedParameters[1], Toast.LENGTH_LONG).show();
+            String temp1 = String.valueOf(CurrentValues[7]*100);
+            String temp2 = String.valueOf(AddedParameters[1]*100);
+            float temp3 = Float.parseFloat(temp1) - Float.parseFloat(temp2);
+            CurrentValues[7] = temp3/100;
         }
 
         //Adding to budget
         else{
-            CurrentValues[7] += AddedParameters[1];
+            String temp1 = String.valueOf(CurrentValues[7]*100);
+            String temp2 = String.valueOf(AddedParameters[1]*100);
+            float temp3 = Float.parseFloat(temp1) + Float.parseFloat(temp2);
+            CurrentValues[7] = temp3/100;
         }
     }
     //New expense data added
     private void addExpense(float[] AddedParameters){
         //Subtracting from expense
         if(AddedParameters[0] == 0){
-            CurrentValues[(int)AddedParameters[2]] -= AddedParameters[1];
+            String temp1 = String.valueOf(CurrentValues[(int)AddedParameters[2]]*100);
+            String temp2 = String.valueOf(AddedParameters[1]*100);
+            float temp3 = Float.parseFloat(temp1) - Float.parseFloat(temp2);
+            CurrentValues[(int)AddedParameters[2]] = temp3/100;
         }
 
         //Adding to expense
         else{
-            CurrentValues[(int)AddedParameters[2]] += AddedParameters[1];
+            String temp1 = String.valueOf(CurrentValues[(int)AddedParameters[2]]*100);
+            String temp2 = String.valueOf(AddedParameters[1]*100);
+            float temp3 = Float.parseFloat(temp1) + Float.parseFloat(temp2);
+            CurrentValues[(int)AddedParameters[2]] = temp3/100;
         }
     }
 
