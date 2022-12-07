@@ -34,9 +34,9 @@ public class MonthlyBudgetDatabaseHelper extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(DATABASE_CREATE);
         //Add categories
-        for (int i = 0; i < 8; i++){
+        /*for (int i = 0; i < 8; i++){
          sqLiteDatabase.execSQL(CATEGORIES_CREATE + "'" + CATEGORIES[i] + "'" + ", 0, 0, 0);");
-        }
+        }*/
         Log.i("MonthlyBudgetDatabaseHelper", "Calling on Create");
 
     }

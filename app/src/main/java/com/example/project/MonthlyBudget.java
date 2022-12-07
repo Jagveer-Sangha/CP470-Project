@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -88,11 +89,13 @@ public class MonthlyBudget extends AppCompatActivity {
         int count = 0;
         while(!c.isAfterLast()){
             CurrentValues[count] = c.getFloat((c.getColumnIndexOrThrow(MonthlyBudgetDatabaseHelper.KEY_VALUE)));
+            UpdatedPercents[count] = c.getFloat((c.getColumnIndexOrThrow(MonthlyBudgetDatabaseHelper.KEY_PERCENT)));
             Log.i(ACTIVITY_NAME, "SQL Category & Value: " + c.getString(c.getColumnIndexOrThrow(MonthlyBudgetDatabaseHelper.KEY_CATEGORY)) + ", " + c.getFloat((c.getColumnIndexOrThrow(MonthlyBudgetDatabaseHelper.KEY_VALUE))));
             c.moveToNext();
             count += 1;
         }
         c.close();
+        BudgetDBH.onUpgrade(BudgetDB,1,2);
         progBar.setProgress(50);
 
         //Calculate Percents
@@ -108,18 +111,6 @@ public class MonthlyBudget extends AppCompatActivity {
         progBar.setProgress(100);
         progBar.setVisibility(View.INVISIBLE);
         loadPieChartData();
-
-        /*
-         String goalVal = ;
-        BudgetList.add(goalVal);
-
-        ContentValues val = new ContentValues();
-        val.put(MonthlyBudgetDatabaseHelper.KEY_CATEGORY, inputBox.getText().toString());
-        long insertId = BudgetDB.insert(MonthlyBudgetDatabaseHelper.TABLE_OF_BUDGET_ITEMS, null, val);
-        Cursor c2 = BudgetDB.query(MonthlyBudgetDatabaseHelper.TABLE_OF_BUDGET_ITEMS, null, GoalsDatabaseHelper.KEY_ID + "=" + insertId, null, null, null, null);
-        c2.moveToFirst();
-        c2.close();
-*/
 
 
         //If click budget button bring up budget
@@ -145,12 +136,11 @@ public class MonthlyBudget extends AppCompatActivity {
     }
     @Override
     protected void onDestroy(){
-        super.onDestroy();
-        MonthlyBudgetDatabaseHelper databaseHelper = new MonthlyBudgetDatabaseHelper(MonthlyBudget.this);
-        SQLiteDatabase database = databaseHelper.getWritableDatabase();
-        databaseHelper.onUpgrade(database,1, 2);
-        database.close();
+        updateDatabase();
+        BudgetDB.close();
+        BudgetDBH.close();
         Log.i(ACTIVITY_NAME, "In onDestroy()");
+        super.onDestroy();
     }
 
     @Override
@@ -252,6 +242,23 @@ public class MonthlyBudget extends AppCompatActivity {
             if(!matcher.matches())
                 return "";
             return null;
+        }
+
+    }
+
+    //Update Database
+    private void updateDatabase(){
+
+        ContentValues val = new ContentValues();
+        for (int i = 0; i < 8; i++){
+            val.put(MonthlyBudgetDatabaseHelper.KEY_CATEGORY, CATEGORIES[i]);
+            val.put(MonthlyBudgetDatabaseHelper.KEY_VALUE, CurrentValues[i]);
+            val.put(MonthlyBudgetDatabaseHelper.KEY_PERCENT, UpdatedPercents[i]);
+            val.put(MonthlyBudgetDatabaseHelper.KEY_TARGET, CurrentValues[i]);
+            long insertId = BudgetDB.insert(MonthlyBudgetDatabaseHelper.TABLE_OF_BUDGET_ITEMS, null, val);
+            Cursor c2 = BudgetDB.query(MonthlyBudgetDatabaseHelper.TABLE_OF_BUDGET_ITEMS, null, MonthlyBudgetDatabaseHelper.KEY_ID + "=" + insertId, null, null, null, null);
+            c2.moveToFirst();
+            c2.close();
         }
 
     }
