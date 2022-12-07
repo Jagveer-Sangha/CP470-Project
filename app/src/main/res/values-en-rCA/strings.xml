@@ -31,6 +31,8 @@
     <string name="goals_button_string">Goals</string>
     <string name="setGoal">Set Goal</string>
     <string name="goalTextBox">Enter Goal</string>
+    <string name="delete_Goal">Delete</string>
+    <string name="edit_Goal">Edit</string>
 
     <!--   Motivation Page Strings -->
     <string name="motivation_button_string">Motivation</string>

@@ -4,8 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ClipData;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,21 +35,28 @@ public class GoalActivity extends AppCompatActivity {
     GoalsDatabaseHelper goalsDB;
     SQLiteDatabase database;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_goal);
 
 
+
+
         EditText inputBox = findViewById(R.id.inputBox);
         Button goalEnter = findViewById(R.id.goalsenter);
         ListView goalsList = findViewById(R.id.goalsList);
+        Button goalDelete = findViewById(R.id.deleteGoal);
         goalsDB = new GoalsDatabaseHelper(this);
         database = goalsDB.getWritableDatabase();
 
 
         GoalAdapter goalAdapter = new GoalAdapter(this);
         goalsList.setAdapter(goalAdapter);
+
+        goalAdapter.notifyDataSetChanged();
 
         Cursor c = database.rawQuery("select * from "+ GoalsDatabaseHelper.TABLE_OF_GOALS_ITEMS + ";", null);
         c.moveToFirst();
@@ -84,6 +94,32 @@ public class GoalActivity extends AppCompatActivity {
 
 
         });
+        goalsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
+                String val = goalsList.getItemAtPosition(pos).toString();
+                Cursor data = goalsDB.getItemId(val);
+                int itemId = -1;
+                while(data.moveToNext()) {
+                    itemId = data.getInt(0);
+
+                }
+                if(itemId > -1){
+                    Log.d(ACTIVITY_NAME, "onItemClick: The ID is " + itemId);
+                    Intent editScreenIntent = new Intent(GoalActivity.this, EditGoalsActivity.class);
+                    editScreenIntent.putExtra("id", itemId);
+                    editScreenIntent.putExtra("item", val);
+                    editScreenIntent.putExtra("itemList", goalsListStrg);
+
+                    startActivity(editScreenIntent);
+                }
+
+
+
+            }
+        });
+
+
 
     }
 
@@ -105,6 +141,16 @@ public class GoalActivity extends AppCompatActivity {
         @Override
         public String getItem(int position) {
             return (goalsListStrg.get(position));
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return (position);
+        }
+
+        @Override
+        public void remove(@Nullable String object) {
+            goalsListStrg.remove(object);
         }
 
         @NonNull
