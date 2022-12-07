@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class BudgetActivity extends AppCompatActivity {
@@ -20,6 +21,7 @@ public class BudgetActivity extends AppCompatActivity {
     Button budgetConfirm;
     Button budgetCancel;
     Switch budgetSwitch;
+    TextView budgetTextView;
     EditText budgetEditText;
 
     @Override
@@ -30,25 +32,50 @@ public class BudgetActivity extends AppCompatActivity {
         budgetCancel = findViewById(R.id.budget_button2);
         budgetSwitch = findViewById(R.id.budget_switch);
         budgetEditText = findViewById(R.id.budget_edittext1);
+        budgetTextView = findViewById(R.id.budget_textView1);
+        //Limit values to 9 digits before decimal and 2 digits after decimal
+        budgetEditText.setFilters(new InputFilter[] {new MonthlyBudget.DecimalDigitsInputFilter(9,2)});
+
+        //Display current value
+        float[] CurrentValues = (float[]) getIntent().getSerializableExtra("Current");
+        String text = getString(R.string.current_budget_text) + " " + Float.toString(CurrentValues[7]);
+        budgetTextView.setText(text);
 
         //Holds values of the budget
         float[] budgetParameters = {0,0};
 
+
         //Budget Confirm button
         budgetConfirm.setOnClickListener(view -> {
             //No value in edittext field
-            if(budgetEditText.getText().toString().equals("")){
+            if(budgetEditText.getText().toString().equals("") || Float.parseFloat(budgetEditText.getText().toString()) == 0){
                 Toast.makeText(getBaseContext(), R.string.toast_empty , Toast.LENGTH_SHORT ).show();
             }
             //Value in edittext field
             else{
-                    budgetEditText.setFilters(new InputFilter[] {new MonthlyBudget.DecimalDigitsInputFilter(9,2)});
+                    //Check which state switch is in
+                    Boolean switchState = budgetSwitch.isChecked();
+                    //1 for true, meaning ADD
+                    if(switchState){
+                        budgetParameters[0] = 1;
+                    }
+                    //0 for false, meaning SUBTRACT
+                    else{
+                        budgetParameters[0] = 0;
+                    }
+                if(switchState || (switchState == false && Float.parseFloat(budgetEditText.getText().toString()) < CurrentValues[7])){
+                    //Grab budget value
+                    budgetParameters[1] = Float.parseFloat(budgetEditText.getText().toString());
                     Log.i(ACTIVITY_NAME, "Budget Confirm Button Clicked");
                     Intent resultIntent = new Intent(  );
-                    resultIntent.putExtra("Values", "Here is my response");
+                    resultIntent.putExtra("Values", budgetParameters);
                     setResult(Activity.RESULT_OK, resultIntent);
                     Toast.makeText(BudgetActivity.this, R.string.toast_confirm, Toast.LENGTH_LONG).show();
                     finish();
+                }
+                else{
+                    Toast.makeText(BudgetActivity.this, R.string.toast_subtract, Toast.LENGTH_LONG).show();
+                }
             }
         });
 

@@ -53,8 +53,10 @@ public class MonthlyBudget extends AppCompatActivity {
     public static String FOOD = "Food", EDUCATE = "Education", ENTERTAIN = "Entertainment", HOUSE = "Housing", MEDS = "Medical", UTIL = "Utilities", ETC = "Other", AVAILABLE = "Remaining"; //Various Expense (subject to change)
     public static String[] CATEGORIES = {FOOD, EDUCATE, ENTERTAIN, HOUSE, MEDS, UTIL, ETC, AVAILABLE};//Available holds budget
     private float[] UpdatedPercents = {0,0,0,0,0,0,0,0};
-    private float[] CurrentValues = {0,0,0,0,0,0,0,0};
+    public float[] CurrentValues = {0,0,0,0,0,0,0,0};
     private float OverUnderBudget = 0;
+    ArrayList<float[]> BudgetAddedParameters;
+    ArrayList<float[]> ExpenseAddedParameters;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,15 +125,19 @@ public class MonthlyBudget extends AppCompatActivity {
         //If click budget button bring up budget
         budgetButton.setOnClickListener(view -> {
             Intent intent = new Intent(MonthlyBudget.this, BudgetActivity.class);
+            intent.putExtra("Current", CurrentValues);
             startActivity(intent);
             Log.i(ACTIVITY_NAME, "Budget Button Clicked");
+            BudgetAddedParameters = ( ArrayList<float[]>) getIntent().getSerializableExtra("Values");
         });
 
         //If click expense button bring up expense
         expenseButton.setOnClickListener(view -> {
             Intent intent = new Intent(MonthlyBudget.this, ExpenseActivity.class);
+            intent.putExtra("Current", CurrentValues);
             startActivity(intent);
             Log.i(ACTIVITY_NAME, "Expense Button Clicked");
+            ExpenseAddedParameters = ( ArrayList<float[]>) getIntent().getSerializableExtra("Values");
         });
 
 
@@ -170,6 +176,10 @@ public class MonthlyBudget extends AppCompatActivity {
         }
 
     }
+
+    //New budget data added
+
+    //New expense data added
 
     //Class to limit decimal places in edittext
     public static class DecimalDigitsInputFilter implements InputFilter {

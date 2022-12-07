@@ -27,6 +27,7 @@
     <string name="toast_confirm">Change Confirmed.</string>
     <string name="toast_cancel">Change Cancelled.</string>
     <string name="toast_empty">No Value Entered.</string>
+    <string name="toast_subtract">Subtraction Exceeds.</string>
 
     <!-- Goals Page Strings -->
     <string name="goals_button_string">Goals</string>
@@ -42,5 +43,16 @@
 
     <!-- Main Page Strings   -->
     <string name="Title">Budgit</string>
+
+    <!-- String Array -->
+    <string-array name="categories">
+        <item>Food</item>
+        <item>Education</item>
+        <item>Entertainment</item>
+        <item>Housing</item>
+        <item>Medical</item>
+        <item>Utilities</item>
+        <item>Etc</item>
+    </string-array>
 
 </resources>
