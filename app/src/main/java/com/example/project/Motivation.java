@@ -37,7 +37,7 @@ public class Motivation extends AppCompatActivity {
 
                 quotesView.setText(quotes[i]);
                 
-                Toast.makeText(getBaseContext(), "Get Motivated" , Toast.LENGTH_SHORT ).show();
+                Toast.makeText(getBaseContext(), R.string.motivate_button, Toast.LENGTH_SHORT ).show();
             }
         });
 

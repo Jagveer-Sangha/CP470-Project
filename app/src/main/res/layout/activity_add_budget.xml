@@ -10,7 +10,7 @@
         android:layout_centerInParent="true"
         android:fontFamily="sans-serif-black"
         android:hint="@string/value_budget_fragment_hint"
-        android:inputType="number"
+        android:inputType="numberDecimal"
         android:textSize="20dp" />
 
     <Button

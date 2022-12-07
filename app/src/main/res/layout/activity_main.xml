@@ -10,9 +10,12 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/Temp"
-        tools:layout_editor_absoluteX="138dp"
-        tools:layout_editor_absoluteY="25dp" />
+        android:fontFamily="sans-serif-black"
+        android:text="@string/Title"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/monthlyBud"

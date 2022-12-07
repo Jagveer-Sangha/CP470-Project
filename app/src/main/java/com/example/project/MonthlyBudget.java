@@ -2,10 +2,13 @@ package com.example.project;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -27,6 +30,8 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import java.util.Calendar;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MonthlyBudget extends AppCompatActivity {
 
@@ -117,13 +122,15 @@ public class MonthlyBudget extends AppCompatActivity {
 
         //If click budget button bring up budget
         budgetButton.setOnClickListener(view -> {
-            setContentView(R.layout.activity_add_budget);
+            Intent intent = new Intent(MonthlyBudget.this, BudgetActivity.class);
+            startActivity(intent);
             Log.i(ACTIVITY_NAME, "Budget Button Clicked");
         });
 
         //If click expense button bring up expense
         expenseButton.setOnClickListener(view -> {
-            setContentView(R.layout.activity_add_expense);
+            Intent intent = new Intent(MonthlyBudget.this, ExpenseActivity.class);
+            startActivity(intent);
             Log.i(ACTIVITY_NAME, "Expense Button Clicked");
         });
 
@@ -160,6 +167,26 @@ public class MonthlyBudget extends AppCompatActivity {
             for (int i = 0; i < 8; i++){
                 UpdatedPercents[i] = CurrentValues[i]/TotalExpenses;
             }
+        }
+
+    }
+
+    //Class to limit decimal places in edittext
+    public static class DecimalDigitsInputFilter implements InputFilter {
+
+        Pattern mPattern;
+
+        public DecimalDigitsInputFilter(int digitsBeforeZero,int digitsAfterZero) {
+            mPattern=Pattern.compile("[0-9]{0," + (digitsBeforeZero-1) + "}+((\\.[0-9]{0," + (digitsAfterZero-1) + "})?)||(\\.)?");
+        }
+
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+
+            Matcher matcher=mPattern.matcher(dest);
+            if(!matcher.matches())
+                return "";
+            return null;
         }
 
     }

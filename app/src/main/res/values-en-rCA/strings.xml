@@ -17,7 +17,7 @@
     <string name="monthly_budget_title_text">Monthly Budget</string>
     <string name="title_activity_goal">GoalActivity</string>
 
-    <!-- Budget Fragment Strings -->
+    <!-- Budget Page Strings -->
     <string name="add_budget_fragment_button">Confirm</string>
     <string name="cancel_budget_fragment_button">Cancel</string>
     <string name="value_budget_fragment_hint">Enter Value:</string>
@@ -25,7 +25,9 @@
     <string name="current_budget_text">Current Budget Value:</string>
     <string name="current_expense_text">Current Expense Value:</string>
     <string name="switch_text">Add</string>
-
+    <string name="toast_confirm">Change Confirmed.</string>
+    <string name="toast_cancel">Change Cancelled.</string>
+    <string name="toast_empty">No Value Entered.</string>
 
     <!-- Goals Page Strings -->
     <string name="goals_button_string">Goals</string>
@@ -38,7 +40,7 @@
     <string name="motivation_button_string">Motivation</string>
     <string name="motivate_button">Get Motivated</string>
 
-    <!-- Extra Stuff   -->
-    <string name="Temp">Current Progress</string>
+    <!-- Main Page Strings   -->
+    <string name="Title">Budgit</string>
 
 </resources>
