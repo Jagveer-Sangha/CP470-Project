@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //create action bar
         Objects.requireNonNull(getSupportActionBar()).setTitle("Main Page");
         Log.i(ACTIVITY_NAME, "In onCreate()");
 
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
          monthlyBudgetButton = findViewById(R.id.monthlyBud);
          goalsButt = findViewById(R.id.goalsButton);
          motivationButton = findViewById(R.id.motiButton);
-
+         //buttons to navigate app
          motivationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,15 +92,17 @@ public class MainActivity extends AppCompatActivity {
 
     }
     @Override
+    //inflates mainmenu xml
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
-
+    //options for actionbar
     public boolean onOptionsItemSelected(MenuItem mi){
         int id = mi.getItemId();
         Intent intent;
-
+        //could use switch but studio suggests if else if
+        //moves to whatever activity
         if(id == R.id.monthly) {
             Log.d("Toolbar", "monthly budget selected");
             intent = new Intent(MainActivity.this, MonthlyBudget.class);
@@ -118,11 +121,11 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             return true;
         }
+        //information button that shows authors and version
         else if(id == R.id.info) {
             Log.d("Toolbar", "information selected");
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder.setTitle(R.string.infoTitle);
-
             builder.setMessage(Html.fromHtml("<b>Authors: </b>Jagveer Sangha, Terry Tran, Adrian Vuong, Talha Safi, Karan Singh\n<b>Version:</b> 1.0", 0));
             builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                 @Override
@@ -130,8 +133,10 @@ public class MainActivity extends AppCompatActivity {
                     //do nothing
                 }
             });
+            //instructions button, setmessage has space limit so its all in four lines
             builder.setNeutralButton(R.string.instruction, new DialogInterface.OnClickListener() {
                 @Override
+                //make another alert dialog
                 public void onClick(DialogInterface dialogInterface, int i) {
                     AlertDialog.Builder builder1 = new AlertDialog.Builder(MainActivity.this);
                     builder1.setTitle(R.string.instruction);
@@ -151,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
             dialog.show();
             return true;
         }
+        //nothing selected
         else{
             Log.d("Toolbar", "no item selected");
             return false;
