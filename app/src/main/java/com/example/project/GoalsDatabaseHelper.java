@@ -7,7 +7,16 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabaseLockedException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-
+/*
+*
+* GoalDataBaseHelper:
+*
+* This class is used to setup the database and all it's functions that will be used to
+* manipulate the database when cerrtain activities take place within the goals page, such as
+* insertion of an item into the list.
+*
+*
+* */
 public class GoalsDatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "goalsDatabase.db";
     private static final int VERSION_NUM = 1;
@@ -23,25 +32,21 @@ public class GoalsDatabaseHelper extends SQLiteOpenHelper {
     public GoalsDatabaseHelper(Context ctx){
         super(ctx, DATABASE_NAME, null, VERSION_NUM);
     }
-
+    //Creates the Database
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(DATABASE_CREATE);
         Log.i("GoalsDatabaseHelper", "Calling on Create");
 
     }
-
+    //Updates the database when changes are made to the datebase, such as when the item is deleted from the list
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVer, int newVer) {
         Log.i("GoalsDatabaseHelper", "Calling on Upgrade, oldVersion = "+ oldVer +" newVersion = "+newVer);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+TABLE_OF_GOALS_ITEMS);
         onCreate(sqLiteDatabase);
     }
-    public void remove(String entry){
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DELETE from " + TABLE_OF_GOALS_ITEMS + "WHERE " + KEY_MESSAGE + " = '" + entry +"';");
-
-    }
+    //Gets the id of the selected goal item from the database in order for it to be manipulated.
     public Cursor getItemId(String item){
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT "+ KEY_ID + " FROM " + TABLE_OF_GOALS_ITEMS
@@ -50,22 +55,7 @@ public class GoalsDatabaseHelper extends SQLiteOpenHelper {
         return data;
     }
 
-    public void updateItem(String newItem, int id, String oldItem){
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "UPDATE" + TABLE_OF_GOALS_ITEMS + " SET " + KEY_MESSAGE
-                + " = '" + newItem + "' WHERE " + KEY_ID + " = '" + id + "'"
-                + " AND " + KEY_MESSAGE + " = '" + oldItem + "';";
-        Log.d(ACTIVITY_NAME, "UpdateName: query: " + query);
-        Log.d(ACTIVITY_NAME, "updateItem:  Setting Item to" + newItem);
-        db.execSQL(query);
-    }
-    public void deleteItem(int id, String item){
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "DELETE FROM "+TABLE_OF_GOALS_ITEMS + " WHERE "
-                + KEY_ID + " = '" + id + "'" + "AND " + KEY_MESSAGE + " = '" + item + "';";
-        Log.d(ACTIVITY_NAME, "UpdateName: query: " + query);
-        Log.d(ACTIVITY_NAME, "updateItem:  Deleting Item" + item);
-    }
+
 
 
 }

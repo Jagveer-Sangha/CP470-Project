@@ -19,14 +19,6 @@
             android:name=".BudgetActivity"
             android:exported="false" />
         <activity
-            android:name=".EditGoalsActivity"
-            android:exported="false" >
-
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
             android:name=".GoalActivity"
             android:parentActivityName=".MainActivity"
             android:exported="true" >
