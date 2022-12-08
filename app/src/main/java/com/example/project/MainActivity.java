@@ -123,11 +123,28 @@ public class MainActivity extends AppCompatActivity {
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder.setTitle(R.string.infoTitle);
 
-            builder.setMessage(Html.fromHtml("<b>Authors: </b>Jagveer Sangha, Terry Tran, Adrian Vuong, Talha Safi, Karan Singh\n<b>Version:</b> 1.0\n<b>Monthly Budget: </b> Displays your monthly budget and expenses.\n<b>Goals: </b> Shows goals, able to add and remove.\n<b>Motivation: </b> Displays motivational quotes.", 0));
+            builder.setMessage(Html.fromHtml("<b>Authors: </b>Jagveer Sangha, Terry Tran, Adrian Vuong, Talha Safi, Karan Singh\n<b>Version:</b> 1.0", 0));
             builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     //do nothing
+                }
+            });
+            builder.setNeutralButton(R.string.instruction, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(MainActivity.this);
+                    builder1.setTitle(R.string.instruction);
+                    builder1.setMessage(Html.fromHtml("<b>Monthly Budget: </b> Displays your monthly budget and expenses.\n<b>Goals: </b> Shows goals, able to add and remove.\n<b>Motivation: </b> Displays motivational quotes.\n", 0));
+
+                    builder1.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            //do nothing
+                        }
+                    });
+                    AlertDialog dialog1 = builder1.create();
+                    dialog1.show();
                 }
             });
             AlertDialog dialog = builder.create();

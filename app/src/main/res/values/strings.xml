@@ -45,6 +45,7 @@
     <string name="Title">uBudgIt</string>
     <string name="information">Info</string>
     <string name="infoTitle">Information</string>
+    <string name="instruction">Instructions</string>
     <!-- String Array -->
     <string-array name="categories">
         <item>Food</item>

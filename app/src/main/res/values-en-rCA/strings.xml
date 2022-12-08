@@ -56,5 +56,6 @@
         <item>Etc</item>
     </string-array>
     <string name="infoTitle">Information</string>
+    <string name="instruction">Instructions</string>
 
 </resources>
