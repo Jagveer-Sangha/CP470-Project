@@ -11,6 +11,8 @@ import android.widget.Toast;
 
 import java.util.Objects;
 
+//This class is for the motivation page. the motivation page was made to help the user stay motivated to not spend money on unnessary things.
+
 public class Motivation extends AppCompatActivity {
 
     private Button generateQuote;
@@ -20,6 +22,7 @@ public class Motivation extends AppCompatActivity {
     private static final String ACTIVITY_NAME = "Motivation";
 
     @Override
+    //This method has the list of quotes in for the page.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_motivation);
@@ -36,6 +39,8 @@ public class Motivation extends AppCompatActivity {
 
 
         generateQuote.setOnClickListener(new View.OnClickListener() {
+            
+            // this method uses the list of quotes and prints a random quote each time when the button is clicked 
             @Override
             public void onClick(View view) {
                 int i = (int) (Math.random()*quotes.length);
