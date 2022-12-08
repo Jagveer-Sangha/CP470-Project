@@ -200,7 +200,7 @@ public class MonthlyBudget extends AppCompatActivity {
 
         //Calculate New Percents when over budget
         else{
-            for (int i = 0; i < 8; i++){
+            for (int i = 0; i < 7; i++){
                 UpdatedPercents[i] = Float.parseFloat(String.format("%.2f",CurrentValues[i]/TotalExpenses));
             }
         }
@@ -304,14 +304,17 @@ public class MonthlyBudget extends AppCompatActivity {
     private void loadPieChartData(){
         //Add category entries to pie chart
         ArrayList<PieEntry> entries = new ArrayList<>();
-        int count = 0;
         boolean emptyChart = true;
-        for (float var: UpdatedPercents){
-            if(var > 0){
+        for (int i = 0; i < 7; i++){
+            if(UpdatedPercents[i] > 0){
                 emptyChart = false;
-                entries.add(new PieEntry(var, CATEGORIES[count]));
+                entries.add(new PieEntry(UpdatedPercents[i], CATEGORIES[i]));
             }
-            count += 1;
+        }
+        //Under Budget
+        if(OverUnderBudget > 0){
+            emptyChart = false;
+            entries.add(new PieEntry(UpdatedPercents[7], CATEGORIES[7]));
         }
 
         //If all values are zero (i.e. empty chart)

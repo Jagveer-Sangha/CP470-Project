@@ -66,7 +66,7 @@ public class BudgetActivity extends AppCompatActivity {
                         budgetParameters[0] = 0;
                     }
                 //Check if addition or subtraction is possible (no negative values)
-                if(switchState || (switchState == false && Float.parseFloat(budgetEditText.getText().toString()) < CurrentValues[7])){
+                if(switchState || (switchState == false && Float.parseFloat(budgetEditText.getText().toString()) <= CurrentValues[7])){
                     //Grab budget value
                     budgetParameters[1] = Float.parseFloat(budgetEditText.getText().toString());
                     Log.i(ACTIVITY_NAME, "Budget Confirm Button Clicked");

@@ -97,18 +97,18 @@ public class ExpenseActivity extends AppCompatActivity {
                     expenseParameters[0] = 0;
                 }
                 //Check if addition or subtraction is possible (no negative values)
-                if(switchState || (switchState == false && Float.parseFloat(expenseEditText.getText().toString()) < CurrentValues[expenseSpinner.getSelectedItemPosition()])){
+                if(switchState || (switchState == false && Float.parseFloat(expenseEditText.getText().toString()) <= CurrentValues[expenseSpinner.getSelectedItemPosition()])){
                     //Grab expense value
                     expenseParameters[1] = Float.parseFloat(expenseEditText.getText().toString());
 
                     //Check which category is selected
                     expenseParameters[2] = expenseSpinner.getSelectedItemPosition();
-                        Log.i(ACTIVITY_NAME, "Expense Confirm Button Clicked");
-                        Intent resultIntent = new Intent(  );
-                        resultIntent.putExtra("Values", expenseParameters);
-                        setResult(3, resultIntent);
-                        Toast.makeText(getBaseContext(), R.string.toast_confirm , Toast.LENGTH_SHORT ).show();
-                        finish();
+                    Log.i(ACTIVITY_NAME, "Expense Confirm Button Clicked");
+                    Intent resultIntent = new Intent(  );
+                    resultIntent.putExtra("Values", expenseParameters);
+                    setResult(3, resultIntent);
+                    Toast.makeText(getBaseContext(), R.string.toast_confirm , Toast.LENGTH_SHORT ).show();
+                    finish();
                 }
                 //Else display toast saying subtraction not possible
                 else{
